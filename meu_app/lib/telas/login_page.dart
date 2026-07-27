@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'cadastro_page.dart';
+import 'tela_fixa.dart';
+
 
 
 class LoginPage extends StatelessWidget {
@@ -14,13 +17,15 @@ class LoginPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+
+
             TextFormField(
               style: const TextStyle(color: Colors.white),
               decoration:  InputDecoration(
                 labelText: 'Nome de usuário ou Email',
                 border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide.none,
+                      borderSide: const  BorderSide(color: Color(0xFF8B5CF6)),
                     ),
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
@@ -37,7 +42,7 @@ class LoginPage extends StatelessWidget {
                 labelText: 'Senha',
                 border: OutlineInputBorder(
                       borderRadius:  BorderRadius.circular(16),
-                      borderSide: BorderSide.none,
+                      borderSide: const  BorderSide(color: Color(0xFF8B5CF6)),
                     ),
                 focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
@@ -55,7 +60,10 @@ class LoginPage extends StatelessWidget {
                 minimumSize: const Size(150, 50)
               ),
               onPressed: () {
-                // Navigate to the home page or perform login logic
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const tela_fixa()),
+                );
               },
               child: const Text('Entrar'),
             ),
@@ -67,11 +75,14 @@ class LoginPage extends StatelessWidget {
                   children: [
                     const Text(
                       'Não tem uma conta?',
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(color: Colors.white),
                     ),
                     TextButton(
                       onPressed: () {
-                        ;
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const CadastroPage()),
+                        );
                       },
                       child: const Text(
                         'Cadastre-se',

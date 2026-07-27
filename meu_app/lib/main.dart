@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFF0F172A),
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: LoginPage()
+      home: const LoginPage(),
     );
   }
 }
