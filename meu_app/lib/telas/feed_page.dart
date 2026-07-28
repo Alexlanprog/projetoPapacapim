@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
-import 'perfil_page.dart';
-import 'busca_page.dart';
-
-
-
-
-
+import 'tela_fixa.dart';
 
 class FeedPage extends StatelessWidget {
   const FeedPage({super.key});
@@ -17,8 +11,14 @@ class FeedPage extends StatelessWidget {
       length: 2,
       child:Scaffold(
       appBar: AppBar(
-          title: const Text('Rede Social'),
-          backgroundColor: const Color(0xFF1E293B),
+          title: const Text('Rede Social',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+          ),
+          backgroundColor: const Color(0xFF0F172A),
 
           bottom: TabBar(
             tabs: const  [

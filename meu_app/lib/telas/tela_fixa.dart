@@ -28,28 +28,34 @@ class _tela_fixaState extends State<tela_fixa> {
         index: _currentIndex,
         children: _pages,
       ),
+
+      
       
       bottomNavigationBar: NavigationBar(
+        indicatorColor: Colors.transparent,
+        backgroundColor: const Color(0xFF1E293B),
+
         selectedIndex: _currentIndex,
         onDestinationSelected: (int index) {
           setState(() {
             _currentIndex = index; 
           });
         },
-        destinations: const [
+        destinations:  [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home),
+            selectedIcon: Icon(Icons.home, color: Color(0xFF8B5CF6)),
             label: 'Feed',
           ),
           NavigationDestination(
             icon: Icon(Icons.search),
+            selectedIcon: Icon(Icons.search, color: Color(0xFF8B5CF6)),
             label: 'Buscar',
           ),
           NavigationDestination(
             icon: Icon(Icons.person_outline),
-            selectedIcon: Icon(Icons.person),
-            label: 'Perfil',
+            selectedIcon: Icon(Icons.person, color: Color(0xFF8B5CF6)),
+            label: 'Perfil', 
           ),
         ],
       ),
