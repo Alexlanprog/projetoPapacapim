@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'tela_fixa.dart';
+import '/widgets/post.dart';
 
 class FeedPage extends StatelessWidget {
   const FeedPage({super.key});
@@ -28,23 +29,23 @@ class FeedPage extends StatelessWidget {
         ),
 
       backgroundColor: const Color(0xFF0F172A),
-      body: Center(
-        
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text(
-              'Bem-vindo ao Feed!',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+      body: TabBarView(
+          children: [
+            // ABA 1: SEGUINDO (Adicionado o Post aqui)
+            SingleChildScrollView(
+              child: Column(
+                children: const [
+                  SizedBox(height: 16),
+                  
+                  // 👇 Post de outra pessoa (Sem botão de excluir)
+                  PostCard(isMeuPerfil: false),
+                  PostCard(isMeuPerfil: false),
+                ],
               ),
             ),
-          ],
+          ], 
         ),
       ),
-    ),
     );
   }
 }

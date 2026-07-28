@@ -1,83 +1,191 @@
 import 'package:flutter/material.dart';
 import '../widgets/avatar.dart';
+import 'alteracaoDados_page.dart';
+import '/widgets/post.dart';
 
 class PerfilPage extends StatelessWidget {
   const PerfilPage({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF0F172A),
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    backgroundColor: const Color(0xFF0F172A),
 
-      appBar: AppBar(
-        title: const Text('@nome_do_usuario',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-          ),
+    appBar: AppBar(
+      title: const Text(
+        '@nome_do_usuario',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
         ),
-        backgroundColor: const Color(0xFF0F172A),
       ),
+      backgroundColor: const Color(0xFF0F172A),
+    ),
 
-      body: Center(
-        child: Column(
-          children:  [
-            Stack(
-              clipBehavior: Clip.none, 
-              alignment: Alignment.center,
-
-              children: [
-                  Container(
+    body: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // 1. Cabeçalho com Stack
+        SizedBox(
+          height: 150, 
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: Container(
                   height: 100, 
                   width: double.infinity, 
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Colors.blueAccent,
-                    ),
                   ),
-            
+                ),
+              ),
               Positioned(
-                bottom: -40,
-                right: 180,
-                left: 0,
+                top: 50,
+                left: 20,
                 child: AvatarPerfil(
-                    radius: 44
+                  radius: 44,
+                ),
+              ),
+              Positioned(
+                top: 10,
+                right: 20,
+                child: _buildBotaoPerfil(
+                  context: context,
+                  isMeuPerfil: true, 
+                  isSeguindo: false,
+                  onPressed: () {},
+                ),
+              ),
+            ],   
+          ),
+        ), 
+
+        // 2. Informações do Perfil (Agora DENTRO da Column)
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+
+              const Text(
+                "Nome do Usuário",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
 
-            Positioned(
-                  bottom: -50, // Fica abaixo da linha do banner
-                  right: 20,   // Coloca no canto direito
-                  child: _buildBotaoPerfil(
-                    isMeuPerfil: true, // Alterar conforme a lógica do seu app
-                    isSeguindo: false, // Alterar conforme a lógica do seu app
-                    onPressed: () {
-                      // Ação ao clicar no botão
-                      print('Botão pressionado');
-                    },
-                  ),
+              const Text(
+                '@nome_do_usuario',
+                style: TextStyle(
+                  color: Colors.blueGrey,
+                  fontSize: 14,
                 ),
-             ],
-            )
-          ],
+              ),
+
+              const SizedBox(height: 12),
+
+              const Text(
+                "Biografia do usuário...",
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 14,
+                  height: 1.4,
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Seguidores e Seguindo
+              Row(
+                children: const [
+
+                  Text(
+                    "0",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                  
+                  SizedBox(width: 4),
+
+                  Text(
+                    'Seguindo',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 14,
+                    ),
+                  ),
+
+                  SizedBox(width: 20),
+
+                    Text(
+                      "0",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                  ),
+
+                  SizedBox(width: 4),
+                  
+                    Text(
+                      'Seguidores',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14,
+                      ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),      
+        
+        const SizedBox(height: 24),
+        const Divider(color: Color(0xFF1E293B), thickness: 4),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          child: Text(
+            'Publicações',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
         ),
-      ),
-    );
-  }
-
-
+      ], 
+    ), 
+  );
+}
   Widget _buildBotaoPerfil({
+  required BuildContext context,
   required bool isMeuPerfil,
   required bool isSeguindo,
   required VoidCallback onPressed,
 }) 
   {
-  // CASO 1: É o meu próprio perfil
     if (isMeuPerfil) {
       return OutlinedButton(
-        onPressed: onPressed,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AlteracaoDadosPage()),
+          );
+        },
         style: OutlinedButton.styleFrom(
-          side: const BorderSide(color: Color(0xFF8B5CF6), width: 1.5), // Borda roxa
+          backgroundColor: const Color(0xFF8B5CF6),
+          side: const BorderSide(color: Colors.white, width: 1.5), 
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -89,7 +197,6 @@ class PerfilPage extends StatelessWidget {
       );
     }
 
-  // CASO 2: É o perfil de outro e já estou SEGUINDO
     if (isSeguindo) {
       return ElevatedButton(
         onPressed: onPressed,
@@ -105,8 +212,6 @@ class PerfilPage extends StatelessWidget {
         ),
       );
     }
-
-  // CASO 3: É o perfil de outro e NÃO estou seguindo
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
