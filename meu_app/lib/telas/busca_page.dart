@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'tela_fixa.dart';
+import '/widgets/post.dart';
 
 class BuscaPage extends StatelessWidget {
   const BuscaPage({super.key});
@@ -42,21 +42,24 @@ class BuscaPage extends StatelessWidget {
         ),
 
       backgroundColor: const Color(0xFF0F172A),
-      body: Center(
+      body: TabBarView(
         
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text(
-              'Bem-vindo à Busca!',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+        children: [
+          SingleChildScrollView(
+              child:  Text('Usuarios'),
             ),
-          ],
-        ),
+
+            SingleChildScrollView(
+              child: Column(
+
+                children:  [
+                  PostCard(isMeuPerfil: false),
+                ]
+                
+              ),
+              
+            )
+        ]
       ),
     ),
     );

@@ -29,7 +29,6 @@ class PostCard extends StatelessWidget {
           // Cabeçalho
           Row(
             children: [
-              // 1. Área clicável do perfil (Avatar + Nomes)
               Expanded(
                 child: GestureDetector(
                   onTap: onUserTap ?? () {},
@@ -49,7 +48,9 @@ class PostCard extends StatelessWidget {
                           ),
                         ),
                       ),
+
                       const SizedBox(width: 12),
+                      
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,18 +104,21 @@ class PostCard extends StatelessWidget {
           const Divider(color: Color(0xFF334155), height: 1),
           const SizedBox(height: 12),
 
-          Row(
-            children: [
-              const SizedBox(width: 32),
-              const Icon(Icons.favorite_border, color: Color(0xFF94A3B8), size: 20),
-              const SizedBox(width: 6),
-              Text(isMeuPerfil ? '15' : '0', style: const TextStyle(color: Color(0xFF94A3B8))),
-              const SizedBox(width: 64),
-              const Icon(Icons.chat_bubble_outline, color: Color(0xFF94A3B8), size: 20),
-              const SizedBox(width: 6),
-              Text(isMeuPerfil ? '0' : '2', style: const TextStyle(color: Color(0xFF94A3B8))),
-            ],
-          ),
+
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.favorite_border, color: Color(0xFF94A3B8), size: 20),
+                    
+                  ),
+                  
+                  IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.chat_bubble_outline, color: Color(0xFF94A3B8), size: 20),
+                  ),
+                ],
+              ),
         ],
       ),
     );

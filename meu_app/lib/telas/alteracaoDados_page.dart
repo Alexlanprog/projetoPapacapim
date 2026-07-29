@@ -22,22 +22,20 @@ class AlteracaoDadosPage extends StatelessWidget {
         color: Colors.white, // 👈 Muda a cor da seta para branco (ou a cor que desejar)
   ),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
 
             children: [
-
-              SizedBox(
-                  width: 90,
-                  height: 90,
-              child: Stack(  
+                Stack(  
                 children: [
             
                 Center(
                     child: Container(
+                      height: 70,
+                      width: 70,              
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: const Color(0xFF4C8DF5),
@@ -47,7 +45,7 @@ class AlteracaoDadosPage extends StatelessWidget {
                         'A', 
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 53, 
+                          fontSize: 35, 
                           fontWeight: FontWeight.bold,
                      ),
                     ),
@@ -56,7 +54,7 @@ class AlteracaoDadosPage extends StatelessWidget {
                 ),
             ],
           ),
-        ),
+        
 
         const SizedBox(height: 10), 
 
@@ -195,7 +193,7 @@ class AlteracaoDadosPage extends StatelessWidget {
             ),
             ),
 
-              const SizedBox(height: 8),
+              const SizedBox(height: 16),
 
             Center(
              child :ElevatedButton(
@@ -212,7 +210,7 @@ class AlteracaoDadosPage extends StatelessWidget {
             ],
           ),
         ),
-      )
+      ),
     );
   }
 }

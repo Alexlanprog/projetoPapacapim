@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/avatar.dart';
-import 'alteracaoDados_page.dart';
+import 'alteracaodados_page.dart';
 import '/widgets/post.dart';
 
 class PerfilPage extends StatelessWidget {
@@ -23,7 +23,9 @@ Widget build(BuildContext context) {
       backgroundColor: const Color(0xFF0F172A),
     ),
 
-    body: Column(
+    body: SingleChildScrollView(
+
+      child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // 1. Cabeçalho com Stack
@@ -49,6 +51,7 @@ Widget build(BuildContext context) {
                 left: 20,
                 child: AvatarPerfil(
                   radius: 44,
+                  isMeuPerfil: true,
                 ),
               ),
               Positioned(
@@ -65,7 +68,6 @@ Widget build(BuildContext context) {
           ),
         ), 
 
-        // 2. Informações do Perfil (Agora DENTRO da Column)
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
@@ -164,7 +166,9 @@ Widget build(BuildContext context) {
             ),
           ),
         ),
+      PostCard(isMeuPerfil: true),
       ], 
+      ),
     ), 
   );
 }
@@ -226,6 +230,4 @@ Widget build(BuildContext context) {
       ),
     );
   }
-
-
 }

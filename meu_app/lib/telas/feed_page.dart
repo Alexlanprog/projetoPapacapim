@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'tela_fixa.dart';
 import '/widgets/post.dart';
+import 'postagem_page.dart';
 
 class FeedPage extends StatelessWidget {
   const FeedPage({super.key});
@@ -31,20 +31,41 @@ class FeedPage extends StatelessWidget {
       backgroundColor: const Color(0xFF0F172A),
       body: TabBarView(
           children: [
-            // ABA 1: SEGUINDO (Adicionado o Post aqui)
+
             SingleChildScrollView(
               child: Column(
-                children: const [
+                children: [
                   SizedBox(height: 16),
                   
-                  // 👇 Post de outra pessoa (Sem botão de excluir)
+                  PostCard(isMeuPerfil: false),
                   PostCard(isMeuPerfil: false),
                   PostCard(isMeuPerfil: false),
                 ],
               ),
             ),
+
+            SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: 16),
+                  
+                  PostCard(isMeuPerfil: false),
+              ],
+            ),
+            )
           ], 
         ),
+        
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: const Color(0xFF8B5CF6),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const PublicacaoPage()),
+                );
+             },
+            child: const Icon(Icons.add, color: Colors.white, size: 28),
+          ),
       ),
     );
   }
