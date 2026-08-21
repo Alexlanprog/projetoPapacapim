@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:meu_app/widgets/camera.dart';
-import '../widgets/camera.dart';
 
 class AlteracaoDadosPage extends StatelessWidget {
   const AlteracaoDadosPage({super.key});
@@ -29,7 +28,11 @@ class AlteracaoDadosPage extends StatelessWidget {
               const SizedBox(height: 20),
 
               ListTile(
-                leading: const Icon(Icons.camera_alt, color: Color(0xFF8B5CF6), size: 28),
+                leading: const Icon(
+                  Icons.camera_alt,
+                  color: Color(0xFF8B5CF6),
+                  size: 28,
+                ),
                 title: const Text(
                   'Tirar Foto (Câmera Simulada)',
                   style: TextStyle(color: Colors.white, fontSize: 16),
@@ -38,15 +41,17 @@ class AlteracaoDadosPage extends StatelessWidget {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => const Camera(),
-                    ),
+                    MaterialPageRoute(builder: (context) => const Camera()),
                   );
                 },
               ),
 
               ListTile(
-                leading: const Icon(Icons.image, color: Color(0xFF38BDF8), size: 28),
+                leading: const Icon(
+                  Icons.image,
+                  color: Color(0xFF38BDF8),
+                  size: 28,
+                ),
                 title: const Text(
                   'Escolhar da Galeria',
                   style: TextStyle(color: Colors.white, fontSize: 16),
@@ -81,7 +86,6 @@ class AlteracaoDadosPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              
               Center(
                 child: Container(
                   height: 80,
@@ -139,8 +143,11 @@ class AlteracaoDadosPage extends StatelessWidget {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(color: Color(0xFF8B5CF6), width: 1.5),
-                  )
+                    borderSide: const BorderSide(
+                      color: Color(0xFF8B5CF6),
+                      width: 1.5,
+                    ),
+                  ),
                 ),
               ),
 
@@ -164,7 +171,10 @@ class AlteracaoDadosPage extends StatelessWidget {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(color: Color(0xFF8B5CF6), width: 1.5),
+                    borderSide: const BorderSide(
+                      color: Color(0xFF8B5CF6),
+                      width: 1.5,
+                    ),
                   ),
                 ),
               ),
@@ -190,7 +200,10 @@ class AlteracaoDadosPage extends StatelessWidget {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(color: Color(0xFF8B5CF6), width: 1.5),
+                    borderSide: const BorderSide(
+                      color: Color(0xFF8B5CF6),
+                      width: 1.5,
+                    ),
                   ),
                 ),
               ),
@@ -216,7 +229,10 @@ class AlteracaoDadosPage extends StatelessWidget {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(color: Color(0xFF8B5CF6), width: 1.5),
+                    borderSide: const BorderSide(
+                      color: Color(0xFF8B5CF6),
+                      width: 1.5,
+                    ),
                   ),
                 ),
               ),
