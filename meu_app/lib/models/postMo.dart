@@ -22,10 +22,7 @@ class PostModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'user_login': userLogin,
-      'content': content,
-      'created_at': createdAt,
+      'post': {'message': content},
     };
   }
 }

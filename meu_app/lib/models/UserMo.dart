@@ -1,35 +1,36 @@
 class UserModel {
   final int id;
-  final String nome;
-  final String email;
+  final String login;
+  final String name;
   final String senha;
   final String senhaConfirmada;
 
   UserModel({
     required this.id,
-    required this.nome,
-    required this.email,
+    required this.name,
+    required this.login,
     required this.senha,
     required this.senhaConfirmada,
   });
 
-  factory UserModel.fromjson(Map<String, dynamic> json) {
+  factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       id: json['id'],
-      nome: json['nome'],
-      email: json['email'],
-      senha: json['senha'],
-      senhaConfirmada: json['senha_confirmada'],
+      login: json['login'] ?? '',
+      name: json['name'] ?? '',
+      senha: '',
+      senhaConfirmada: '',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'nome': nome,
-      'email': email,
-      'senha': senha,
-      'senhaConfirmada': senhaConfirmada,
+      'user': {
+        'login': login,
+        'name': name,
+        'password': senha,
+        'password_confirmation': senhaConfirmada,
+      },
     };
   }
 }
