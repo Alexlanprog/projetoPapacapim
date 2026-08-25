@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'feed_page.dart';
 import '../widgets/avatar.dart';
 
-class PublicacaoPage extends StatelessWidget{
+class PublicacaoPage extends StatelessWidget {
   const PublicacaoPage({super.key});
 
   @override
@@ -41,12 +41,14 @@ class PublicacaoPage extends StatelessWidget{
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 10.0,
+            ),
             child: ElevatedButton(
-              onPressed: () {
-              },
+              onPressed: () {},
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF1E293B), 
+                backgroundColor: const Color(0xFF1E293B),
                 foregroundColor: const Color(0xFF94A3B8),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
@@ -56,10 +58,7 @@ class PublicacaoPage extends StatelessWidget{
               ),
               child: const Text(
                 'Publicar',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
               ),
             ),
           ),
@@ -70,26 +69,19 @@ class PublicacaoPage extends StatelessWidget{
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const AvatarPerfil(radius: 22, isMeuPerfil: true),
 
-            const AvatarPerfil(radius: 22, isMeuPerfil: true,),
-             
             const SizedBox(width: 12),
 
             Expanded(
               child: TextField(
                 maxLines: null,
                 keyboardType: TextInputType.multiline,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                ),
-                cursorColor: const Color(0xFF8B5CF6), 
+                style: const TextStyle(color: Colors.white, fontSize: 18),
+                cursorColor: const Color(0xFF8B5CF6),
                 decoration: const InputDecoration(
                   hintText: 'O que está acontecendo?',
-                  hintStyle: TextStyle(
-                    color: Color(0xFF64748B),
-                    fontSize: 16,
-                  ),
+                  hintStyle: TextStyle(color: Color(0xFF64748B), fontSize: 16),
                   border: InputBorder.none,
                 ),
               ),
@@ -99,5 +91,4 @@ class PublicacaoPage extends StatelessWidget{
       ),
     );
   }
-
 }

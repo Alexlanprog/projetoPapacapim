@@ -14,7 +14,6 @@ class CadastroPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
               const Text(
                 'Criar Conta',
                 style: TextStyle(
@@ -32,12 +31,14 @@ class CadastroPage extends StatelessWidget {
                   labelText: 'Nome de usuário',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: const  BorderSide(color: Color(0xFF8B5CF6)),
+                    borderSide: const BorderSide(color: Color(0xFF8B5CF6)),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide:
-                        const BorderSide(color: Color(0xFF8B5CF6), width: 1.5),
+                    borderSide: const BorderSide(
+                      color: Color(0xFF8B5CF6),
+                      width: 1.5,
+                    ),
                   ),
                 ),
               ),
@@ -50,12 +51,14 @@ class CadastroPage extends StatelessWidget {
                   labelText: 'Senha',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: const  BorderSide(color: Color(0xFF8B5CF6)),
+                    borderSide: const BorderSide(color: Color(0xFF8B5CF6)),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide:
-                        const BorderSide(color: Color(0xFF8B5CF6), width: 1.5),
+                    borderSide: const BorderSide(
+                      color: Color(0xFF8B5CF6),
+                      width: 1.5,
+                    ),
                   ),
                 ),
                 obscureText: true,
@@ -63,18 +66,20 @@ class CadastroPage extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-               TextFormField(
+              TextFormField(
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   labelText: 'ConfirmarSenha',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: const  BorderSide(color: Color(0xFF8B5CF6)),
+                    borderSide: const BorderSide(color: Color(0xFF8B5CF6)),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide:
-                        const BorderSide(color: Color(0xFF8B5CF6), width: 1.5),
+                    borderSide: const BorderSide(
+                      color: Color(0xFF8B5CF6),
+                      width: 1.5,
+                    ),
                   ),
                 ),
                 obscureText: true,
@@ -82,26 +87,26 @@ class CadastroPage extends StatelessWidget {
 
               const SizedBox(height: 16),
 
-
-               TextFormField(
+              TextFormField(
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   labelText: 'ConfirmarSenha',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: const  BorderSide(color: Color(0xFF8B5CF6)),
+                    borderSide: const BorderSide(color: Color(0xFF8B5CF6)),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide:
-                        const BorderSide(color: Color(0xFF8B5CF6), width: 1.5),
+                    borderSide: const BorderSide(
+                      color: Color(0xFF8B5CF6),
+                      width: 1.5,
+                    ),
                   ),
                 ),
                 obscureText: true,
               ),
 
               const SizedBox(height: 32),
-
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -112,17 +117,23 @@ class CadastroPage extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.pop(context,
-                      MaterialPageRoute(builder: (context) => const LoginPage()));
+                      Navigator.pop(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginPage(),
+                        ),
+                      );
                     },
-                    child: const Text('Entrar', style: TextStyle(color: Color(0xFF8B5CF6))),
+                    child: const Text(
+                      'Entrar',
+                      style: TextStyle(color: Color(0xFF8B5CF6)),
+                    ),
                   ),
                 ],
               ),
-
             ],
           ),
-        ), 
+        ),
       ),
     );
   }
