@@ -5,7 +5,7 @@ import 'package:meu_app/models/UserMo.dart';
 class UserApiService {
   final String url = 'https://api.papacapim.just.pro.br';
 
-  Future<UserModel> getUser(String login, String senha) async {
+  Future<String> getUser(String login, String senha) async {
     final http.Client client = http.Client();
     final _url = Uri.parse('$url/sessions');
 
