@@ -5,7 +5,7 @@ import 'package:meu_app/models/UserMo.dart';
 class UserApiService {
   final String url = 'https://api.papacapim.just.pro.br';
 
-  Future<String> getUser(String login, String senha) async {
+  Future<String> getUser({required String login, required String senha}) async {
     final http.Client client = http.Client();
     final _url = Uri.parse('$url/sessions');
 
@@ -22,8 +22,6 @@ class UserApiService {
       } else {
         throw Exception('Falha no login ${res.statusCode} : ${res.body}');
       }
-    } catch (e) {
-      throw Exception('Erro ao carregar usuário $e');
     } finally {
       client.close();
     }
@@ -44,8 +42,6 @@ class UserApiService {
       } else {
         throw Exception('Falha ao cadastrar (${res.statusCode}): ${res.body}');
       }
-    } catch (e) {
-      throw Exception('Erro de conexão ao cadastrar usuário: $e');
     } finally {
       client.close();
     }

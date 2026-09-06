@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
 import 'cadastro_page.dart';
 import 'tela_fixa.dart';
+import '/apiService/userApiService.dart';
+import '/apiService/userSession.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _usuarioController = TextEditingController();
+  final TextEditingController _senhaController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +26,7 @@ class LoginPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextFormField(
+                controller: _usuarioController,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   labelText: 'Nome de usuário ou Email',
@@ -36,6 +47,7 @@ class LoginPage extends StatelessWidget {
               const SizedBox(height: 16),
 
               TextFormField(
+                controller: _senhaController,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   labelText: 'Senha',
@@ -61,11 +73,47 @@ class LoginPage extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(150, 50),
                 ),
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const tela_fixa()),
-                  );
+                onPressed: () async {
+                  final usuario = _usuarioController.text.trim();
+                  final senha = _senhaController.text;
+
+                  if (usuario.isEmpty || senha.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Preencha todos os campos!'),
+                      ),
+                    );
+                    return;
+                  }
+                  try {
+                    final token = await UserApiService().getUser(
+                      login: usuario,
+                      senha: senha,
+                    );
+
+                    if (token.isNotEmpty) {
+                      await UserSession.saveSession(
+                        token: token,
+                        userName: usuario,
+                      );
+                    } else {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text('Erro ao logar')));
+                    }
+
+                    if (!mounted) return;
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const tela_fixa(),
+                      ),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text('Erro: $e')));
+                  }
                 },
                 child: const Text('Entrar'),
               ),

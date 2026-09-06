@@ -18,7 +18,9 @@ class PostCard extends StatelessWidget {
     final authorLogin = post?.userLogin.isNotEmpty == true
         ? post!.userLogin
         : (isMeuPerfil ? 'Você' : 'Usuário');
+
     final initial = authorLogin.isNotEmpty ? authorLogin[0].toUpperCase() : 'P';
+
     final content = post?.content.isNotEmpty == true
         ? post!.content
         : (isMeuPerfil
