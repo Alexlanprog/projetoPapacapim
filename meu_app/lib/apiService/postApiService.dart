@@ -9,7 +9,7 @@ class PostApiService {
 
   Future<List<PostModel>> getPost({required String token}) async {
     final http.Client client = http.Client();
-    final _url = Uri.parse('https://api.papacapim.just.pro.br/posts');
+    final _url = Uri.parse('$url/posts');
 
     try {
       final res = await client.get(
@@ -34,7 +34,7 @@ class PostApiService {
 
   Future<PostModel> writePost(PostModel post, {required String token}) async {
     final http.Client client = http.Client();
-    final _url = Uri.parse('https://api.papacapim.just.pro.br/posts');
+    final _url = Uri.parse('$url/posts');
 
     try {
       final res = await client.post(
@@ -50,6 +50,131 @@ class PostApiService {
       }
     } catch (e) {
       throw Exception('Erro ao criar post $e');
+    } finally {
+      client.close();
+    }
+  }
+
+  Future<bool> curtirPost(int id, {required String token}) async {
+    final http.Client client = http.Client();
+    final _url = Uri.parse('$url/posts/$id/likes');
+
+    try {
+      final res = await client.post(
+        _url,
+        headers: {'x-session-token': token, 'Content-Type': 'application/json'},
+      );
+
+      if (res.statusCode == 200 ||
+          res.statusCode == 201 ||
+          res.statusCode == 204) {
+        return true;
+      } else {
+        throw Exception('Falha ao curtir post: ${res.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Erro ao curtir post $e');
+    } finally {
+      client.close();
+    }
+  }
+
+  Future<bool> descurtiPost(int id, {required String token}) async {
+    final http.Client client = http.Client();
+    final _url = Uri.parse('$url/posts/$id/likes/me');
+
+    try {
+      final res = await client.delete(
+        _url,
+        headers: {'x-session-token': token, 'Content-Type': 'application/json'},
+      );
+
+      if (res.statusCode == 200 || res.statusCode == 204) {
+        return true;
+      } else {
+        throw Exception('Falha ao descutir post: ${res.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Erro ao descutir post $e');
+    } finally {
+      client.close();
+    }
+  }
+
+  Future<bool> comentarPost(
+    int id,
+    String message, {
+    required String token,
+  }) async {
+    final http.Client client = http.Client();
+    final _url = Uri.parse('$url/posts/$id/replies');
+
+    try {
+      final res = await client.post(
+        _url,
+        headers: {'x-session-token': token, 'Content-Type': 'application/json'},
+        body: jsonEncode({'message': message}),
+      );
+
+      if (res.statusCode == 200 ||
+          res.statusCode == 201 ||
+          res.statusCode == 204) {
+        return true;
+      } else {
+        throw Exception('Falha ao comentar post: ${res.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Erro ao comentar post $e');
+    } finally {
+      client.close();
+    }
+  }
+
+  Future<List<PostModel>> listarRespostas(
+    int id, {
+    required String token,
+  }) async {
+    final http.Client client = http.Client();
+    final _url = Uri.parse('$url/posts/$id/replies');
+
+    try {
+      final res = await client.get(
+        _url,
+        headers: {'x-session-token': token, 'Content-Type': 'application/json'},
+      );
+
+      if (res.statusCode == 200) {
+        final List<dynamic> jsonList = jsonDecode(res.body);
+        return jsonList
+            .map((json) => PostModel.fromJson(json as Map<String, dynamic>))
+            .toList();
+      } else {
+        throw Exception('Falha ao carregar respostas: ${res.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Erro ao carregar respostas: $e');
+    } finally {
+      client.close();
+    }
+  }
+
+  Future<bool> deletePost(int id, {required String token}) async {
+    final http.Client client = http.Client();
+    final _url = Uri.parse('$url/posts/$id');
+
+    try {
+      final res = await client.delete(
+        _url,
+        headers: {'x-session-token': token, 'Content-Type': 'application/json'},
+      );
+
+      if (res.statusCode == 200 || res.statusCode == 204) {
+        return true;
+      } else {
+        throw Exception('Falha ao deletar post: ${res.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Erro ao deletar post $e');
     } finally {
       client.close();
     }

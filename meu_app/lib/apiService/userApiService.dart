@@ -27,6 +27,29 @@ class UserApiService {
     }
   }
 
+  Future<Set<String>> getUsuariosSeguidos({required String token}) async {
+    final http.Client client = http.Client();
+    try {
+      final res = await client.get(
+        Uri.parse('$url/users'),
+        headers: {'x-session-token': token, 'Content-Type': 'application/json'},
+      );
+      if (res.statusCode == 200) {
+        final List<dynamic> users = jsonDecode(res.body);
+        // Retorna o conjunto dos logins que você segue (you_follow == true)
+        return users
+            .where((usuario) => usuario['you_follow'] == true)
+            .map((usuario) => usuario['login'].toString())
+            .toSet();
+      }
+      return {};
+    } catch (e) {
+      return {};
+    } finally {
+      client.close();
+    }
+  }
+
   Future<bool> register(UserModel user) async {
     final http.Client client = http.Client();
     final _url = Uri.parse('$url/users');
