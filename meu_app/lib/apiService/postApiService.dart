@@ -179,4 +179,24 @@ class PostApiService {
       client.close();
     }
   }
+
+  Future<List<PostModel>> getPostsDoUsuario(
+    String login, {
+    required String token,
+  }) async {
+    final http.Client client = http.Client();
+    try {
+      final res = await client.get(
+        Uri.parse('$url/users/$login/posts'),
+        headers: {'x-session-token': token, 'Content-Type': 'application/json'},
+      );
+      if (res.statusCode == 200) {
+        final List<dynamic> list = jsonDecode(res.body);
+        return list.map((j) => PostModel.fromJson(j)).toList();
+      }
+      return [];
+    } finally {
+      client.close();
+    }
+  }
 }

@@ -6,15 +6,16 @@ import '../models/postMo.dart';
 import '../repository/postRepository.dart';
 import '../widgets/post.dart';
 import 'postagem_page.dart';
+import 'perfil_page.dart';
 
 class FeedPage extends StatefulWidget {
   const FeedPage({super.key});
 
   @override
-  State<FeedPage> createState() => _FeedPageState();
+  State<FeedPage> createState() => FeedPageState();
 }
 
-class _FeedPageState extends State<FeedPage> {
+class FeedPageState extends State<FeedPage> {
   final PostRepository _postRepository = PostRepository(PostApiService());
   final UserApiService _userApiService = UserApiService();
 
@@ -27,16 +28,21 @@ class _FeedPageState extends State<FeedPage> {
     _carregarFeed();
   }
 
-  void _carregarFeed() async {
+  void carregarFeed() {
+    _carregarFeed();
+  }
+
+  Future<void> _carregarFeed() async {
     final token = await UserSession.getToken() ?? '';
 
-    // Busca quem o usuário logado segue
     final seguidos = await _userApiService.getUsuariosSeguidos(token: token);
 
-    setState(() {
-      _perfisSeguidos = seguidos;
-      _futurePosts = _postRepository.getPost(token: token);
-    });
+    if (mounted) {
+      setState(() {
+        _perfisSeguidos = seguidos;
+        _futurePosts = _postRepository.getPost(token: token);
+      });
+    }
   }
 
   @override
@@ -93,14 +99,13 @@ class _FeedPageState extends State<FeedPage> {
 
             final todosPosts = snapshot.data ?? [];
 
-            // ✅ Filtra apenas posts de pessoas que estão na lista de seguidos:
             final postsDosSeguidos = todosPosts
-                .where((post) => _perfisSeguidos.contains(post.userLogin))
+                .where((post) => _perfisSeguidos.any(
+                    (s) => s.toLowerCase() == post.userLogin.toLowerCase()))
                 .toList();
 
             return TabBarView(
               children: [
-                // 1. ABA GERAL: Todas as postagens que o back-end envia
                 RefreshIndicator(
                   onRefresh: () async => _carregarFeed(),
                   child: todosPosts.isEmpty
@@ -113,12 +118,24 @@ class _FeedPageState extends State<FeedPage> {
                       : ListView.builder(
                           itemCount: todosPosts.length,
                           itemBuilder: (context, index) {
-                            return PostCard(post: todosPosts[index]);
+                            final post = todosPosts[index];
+                            return PostCard(
+                              post: post,
+                              onUserTap: () async {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        PerfilPage(userLogin: post.userLogin),
+                                  ),
+                                );
+                                _carregarFeed();
+                              },
+                            );
                           },
                         ),
                 ),
 
-                // 2. ABA SEGUINDO: Apenas as postagens de perfis que você segue
                 RefreshIndicator(
                   onRefresh: () async => _carregarFeed(),
                   child: postsDosSeguidos.isEmpty
@@ -131,7 +148,20 @@ class _FeedPageState extends State<FeedPage> {
                       : ListView.builder(
                           itemCount: postsDosSeguidos.length,
                           itemBuilder: (context, index) {
-                            return PostCard(post: postsDosSeguidos[index]);
+                            final post = postsDosSeguidos[index];
+                            return PostCard(
+                              post: post,
+                              onUserTap: () async {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        PerfilPage(userLogin: post.userLogin),
+                                  ),
+                                );
+                                _carregarFeed();
+                              },
+                            );
                           },
                         ),
                 ),

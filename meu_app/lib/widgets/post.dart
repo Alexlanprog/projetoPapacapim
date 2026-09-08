@@ -3,11 +3,13 @@ import 'package:meu_app/apiService/postApiService.dart';
 import 'package:meu_app/apiService/userSession.dart';
 import 'package:meu_app/models/postMo.dart';
 
+//ver a questao de imagem do perfil
+
 class PostCard extends StatefulWidget {
   final PostModel? post;
   final bool isMeuPerfil;
   final VoidCallback? onUserTap;
-  final VoidCallback? onDelete; // Chamado após apagar para atualizar a tela
+  final VoidCallback? onDelete;
 
   const PostCard({
     super.key,

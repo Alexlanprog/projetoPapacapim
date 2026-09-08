@@ -163,7 +163,7 @@ class _CadastroPageState extends State<CadastroPage> {
                   }
 
                   try {
-                    final cadastrou = await UserApiService().register(
+                    final cadastrou = await UserApiService().registrar(
                       UserModel(
                         name: nome,
                         login: usuario,
