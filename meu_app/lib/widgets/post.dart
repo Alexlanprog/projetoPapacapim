@@ -41,7 +41,6 @@ class _PostCardState extends State<PostCard> {
     }
   }
 
-  // 1. Alternar Curtir e Descurtir
   Future<void> _toggleCurtida() async {
     final postId = widget.post?.id;
     if (postId == null) return;
@@ -75,7 +74,6 @@ class _PostCardState extends State<PostCard> {
     }
   }
 
-  // 2. Deletar Postagem (se for o próprio perfil)
   Future<void> _deletarPost() async {
     final postId = widget.post?.id;
     if (postId == null) return;
@@ -137,7 +135,6 @@ class _PostCardState extends State<PostCard> {
     }
   }
 
-  // 3. Abrir Modal de Comentários / Respostas
   void _abrirComentarios() {
     final postId = widget.post?.id;
     if (postId == null) return;
@@ -229,7 +226,6 @@ class _PostCardState extends State<PostCard> {
                 ),
               ),
 
-              // Botão de deletar (se for meu perfil)
               if (widget.isMeuPerfil)
                 IconButton(
                   onPressed: _deletarPost,
@@ -259,7 +255,6 @@ class _PostCardState extends State<PostCard> {
 
           Row(
             children: [
-              // Botão Curtir
               IconButton(
                 onPressed: _toggleCurtida,
                 icon: Icon(
@@ -269,7 +264,6 @@ class _PostCardState extends State<PostCard> {
                 ),
               ),
 
-              // Botão Comentar
               IconButton(
                 onPressed: _abrirComentarios,
                 icon: const Icon(
@@ -286,7 +280,6 @@ class _PostCardState extends State<PostCard> {
   }
 }
 
-// Widget da Janelinha de Comentários / Respostas
 class _ModalComentarios extends StatefulWidget {
   final int postId;
   final PostApiService apiService;
@@ -367,7 +360,6 @@ class _ModalComentariosState extends State<_ModalComentarios> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            // Barra superior
             Container(
               width: 40,
               height: 4,
@@ -387,7 +379,6 @@ class _ModalComentariosState extends State<_ModalComentarios> {
             ),
             const Divider(color: Color(0xFF334155), height: 24),
 
-            // Lista de comentários
             Expanded(
               child: _carregando
                   ? const Center(
@@ -440,7 +431,6 @@ class _ModalComentariosState extends State<_ModalComentarios> {
                     ),
             ),
 
-            // Campo para digitar comentário
             Row(
               children: [
                 Expanded(
