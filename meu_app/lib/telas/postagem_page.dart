@@ -16,11 +16,11 @@ class PublicacaoPage extends StatefulWidget {
 class _PublicacaoPageState extends State<PublicacaoPage> {
   final TextEditingController _conteudoController = TextEditingController();
 
-  String _usuario = ''; // 👈 1. Guarda o nome do usuário conectado
+  String _usuario = ''; 
   @override
   void initState() {
     super.initState();
-    _carregarUsuario(); // 👈 2. Carrega ao abrir a tela
+    _carregarUsuario(); 
   }
 
   void _carregarUsuario() async {
