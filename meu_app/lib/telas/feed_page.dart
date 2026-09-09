@@ -74,7 +74,7 @@ class FeedPageState extends State<FeedPage> {
             unselectedLabelColor: Colors.grey,
             tabs: [
               Tab(text: 'Geral'),
-              Tab(text: 'Seguindo'), // 👈 Postagens dos perfis que você segue
+              Tab(text: 'Seguindo'), 
             ],
           ),
         ),
