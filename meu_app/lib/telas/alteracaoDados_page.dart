@@ -378,7 +378,6 @@ class _AlteracaoDadosPageState extends State<AlteracaoDadosPage> {
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
-                    // 1. Pede confirmação antes de excluir
                     final confirmar = await showDialog<bool>(
                       context: context,
                       builder: (ctx) => AlertDialog(
@@ -413,7 +412,6 @@ class _AlteracaoDadosPageState extends State<AlteracaoDadosPage> {
                       ),
                     );
 
-                    // Se cancelou, não faz nada
                     if (confirmar != true) return;
 
                     setState(() => _isLoading = true);
@@ -424,7 +422,6 @@ class _AlteracaoDadosPageState extends State<AlteracaoDadosPage> {
                         throw Exception('Token não encontrado');
                       }
 
-                      // 2. Chama a API para deletar a conta
                       final sucesso = await UserApiService().deletarConta(
                         token: token,
                       );
@@ -432,7 +429,6 @@ class _AlteracaoDadosPageState extends State<AlteracaoDadosPage> {
                       if (!mounted) return;
 
                       if (sucesso) {
-                        // 3. Limpa a sessão local
                         await UserSession.clearSession();
 
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -442,7 +438,6 @@ class _AlteracaoDadosPageState extends State<AlteracaoDadosPage> {
                           ),
                         );
 
-                        // 4. Redireciona para a tela de Login
                         Navigator.pushNamedAndRemoveUntil(
                           context,
                           '/login',
