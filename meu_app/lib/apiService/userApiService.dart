@@ -36,7 +36,6 @@ class UserApiService {
 
     final http.Client client = http.Client();
     try {
-      // 1. Consulta o próprio perfil para saber a contagem de perfis seguidos
       final meRes = await client.get(
         Uri.parse('$url/users/me'),
         headers: {'x-session-token': token, 'Content-Type': 'application/json'},
@@ -53,7 +52,6 @@ class UserApiService {
         }
       }
 
-      // 2. Busca páginas de usuários em paralelo (cobrem até 400 usuários cadastrados)
       final seguidosEncontrados = <String>{...seguidosLocais};
       final futures = List.generate(20, (i) async {
         try {
