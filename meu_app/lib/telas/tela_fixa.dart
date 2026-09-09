@@ -11,7 +11,6 @@ class tela_fixa extends StatefulWidget {
 }
 
 class _tela_fixaState extends State<tela_fixa> {
-  // Índice para controlar qual aba inferior está ativa
   int _currentIndex = 0;
 
   final GlobalKey<FeedPageState> _feedKey = GlobalKey<FeedPageState>();
