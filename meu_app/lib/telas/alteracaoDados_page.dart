@@ -1,9 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:meu_app/widgets/camera.dart';
-import '../widgets/camera.dart';
+import 'package:meu_app/apiService/userApiService.dart';
+import 'package:meu_app/apiService/userSession.dart';
 
-class AlteracaoDadosPage extends StatelessWidget {
+//ver botao de deletar conta
+
+class AlteracaoDadosPage extends StatefulWidget {
   const AlteracaoDadosPage({super.key});
+
+  @override
+  State<AlteracaoDadosPage> createState() => _AlteracaoDadosPageState();
+}
+
+class _AlteracaoDadosPageState extends State<AlteracaoDadosPage> {
+  final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
+
+  final TextEditingController _loginController = TextEditingController();
+  final TextEditingController _nomeController = TextEditingController();
+  final TextEditingController _senhaAtualController = TextEditingController();
+  final TextEditingController _novaSenhaController = TextEditingController();
 
   void _showOpcoesFoto(BuildContext context) {
     showModalBottomSheet(
@@ -29,7 +45,11 @@ class AlteracaoDadosPage extends StatelessWidget {
               const SizedBox(height: 20),
 
               ListTile(
-                leading: const Icon(Icons.camera_alt, color: Color(0xFF8B5CF6), size: 28),
+                leading: const Icon(
+                  Icons.camera_alt,
+                  color: Color(0xFF8B5CF6),
+                  size: 28,
+                ),
                 title: const Text(
                   'Tirar Foto (Câmera Simulada)',
                   style: TextStyle(color: Colors.white, fontSize: 16),
@@ -38,15 +58,17 @@ class AlteracaoDadosPage extends StatelessWidget {
                   Navigator.pop(context);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => const Camera(),
-                    ),
+                    MaterialPageRoute(builder: (context) => const Camera()),
                   );
                 },
               ),
 
               ListTile(
-                leading: const Icon(Icons.image, color: Color(0xFF38BDF8), size: 28),
+                leading: const Icon(
+                  Icons.image,
+                  color: Color(0xFF38BDF8),
+                  size: 28,
+                ),
                 title: const Text(
                   'Escolhar da Galeria',
                   style: TextStyle(color: Colors.white, fontSize: 16),
@@ -81,7 +103,6 @@ class AlteracaoDadosPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              
               Center(
                 child: Container(
                   height: 80,
@@ -122,7 +143,7 @@ class AlteracaoDadosPage extends StatelessWidget {
               const SizedBox(height: 8),
 
               const Text(
-                'Nome Exibido',
+                'Login',
                 style: TextStyle(
                   color: Colors.white70,
                   fontSize: 14,
@@ -131,6 +152,7 @@ class AlteracaoDadosPage extends StatelessWidget {
               ),
               const SizedBox(height: 5),
               TextFormField(
+                controller: _loginController,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
@@ -139,15 +161,18 @@ class AlteracaoDadosPage extends StatelessWidget {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(color: Color(0xFF8B5CF6), width: 1.5),
-                  )
+                    borderSide: const BorderSide(
+                      color: Color(0xFF8B5CF6),
+                      width: 1.5,
+                    ),
+                  ),
                 ),
               ),
 
               const SizedBox(height: 20),
 
               const Text(
-                'Descrição',
+                'Nome',
                 style: TextStyle(
                   color: Colors.white70,
                   fontSize: 14,
@@ -156,6 +181,7 @@ class AlteracaoDadosPage extends StatelessWidget {
               ),
               const SizedBox(height: 5),
               TextFormField(
+                controller: _nomeController,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
@@ -164,7 +190,10 @@ class AlteracaoDadosPage extends StatelessWidget {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(color: Color(0xFF8B5CF6), width: 1.5),
+                    borderSide: const BorderSide(
+                      color: Color(0xFF8B5CF6),
+                      width: 1.5,
+                    ),
                   ),
                 ),
               ),
@@ -181,6 +210,7 @@ class AlteracaoDadosPage extends StatelessWidget {
               ),
               const SizedBox(height: 5),
               TextFormField(
+                controller: _senhaAtualController,
                 style: const TextStyle(color: Colors.white),
                 obscureText: true,
                 decoration: InputDecoration(
@@ -190,7 +220,10 @@ class AlteracaoDadosPage extends StatelessWidget {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(color: Color(0xFF8B5CF6), width: 1.5),
+                    borderSide: const BorderSide(
+                      color: Color(0xFF8B5CF6),
+                      width: 1.5,
+                    ),
                   ),
                 ),
               ),
@@ -207,6 +240,7 @@ class AlteracaoDadosPage extends StatelessWidget {
               ),
               const SizedBox(height: 5),
               TextFormField(
+                controller: _novaSenhaController,
                 style: const TextStyle(color: Colors.white),
                 obscureText: true,
                 decoration: InputDecoration(
@@ -216,7 +250,10 @@ class AlteracaoDadosPage extends StatelessWidget {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(color: Color(0xFF8B5CF6), width: 1.5),
+                    borderSide: const BorderSide(
+                      color: Color(0xFF8B5CF6),
+                      width: 1.5,
+                    ),
                   ),
                 ),
               ),
@@ -225,7 +262,105 @@ class AlteracaoDadosPage extends StatelessWidget {
 
               Center(
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final novoNome = _nomeController.text.trim();
+                    final login = _loginController.text.trim();
+                    final novaSenha = _senhaAtualController.text.trim();
+                    final novaSenha_confirmada = _novaSenhaController.text
+                        .trim();
+
+                    if (novoNome.isEmpty &&
+                        login.isEmpty &&
+                        novaSenha.isEmpty &&
+                        novaSenha_confirmada.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Preencha ao menos um campo para alterar',
+                          ),
+                        ),
+                      );
+                      return;
+                    }
+
+                    if (novaSenha != novaSenha_confirmada &&
+                        novaSenha.length < 6) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'As senhas não coincidem ou senha menor que 6 caracteres',
+                          ),
+                        ),
+                      );
+                      return;
+                    }
+
+                    setState(() => _isLoading = true);
+
+                    try {
+                      final token = await UserSession.getToken();
+                      if (token == null) {
+                        throw Exception('Token não encontrado');
+                      }
+
+                      final sucesso = await UserApiService().alterar(
+                        token: token,
+                        login: login.isNotEmpty ? login : null,
+                        nome: novoNome.isNotEmpty ? novoNome : null,
+                        senha: novaSenha.isNotEmpty ? novaSenha : null,
+                      );
+
+                      if (!mounted) return;
+
+                      if (sucesso) {
+                        if (login.isNotEmpty) {
+                          await UserSession.saveSession(
+                            token: token,
+                            userName: login,
+                          );
+                        }
+
+                        if (novaSenha.isNotEmpty) {
+                          await UserSession.clearSession();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Senha alterada! Por segurança, faça login novamente.',
+                              ),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            '/login',
+                            (route) => false,
+                          );
+                          return;
+                        }
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Dados atualizados com sucesso!'),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Falha ao atualizar dados!'),
+                          ),
+                        );
+                      }
+                    } catch (e) {
+                      if (!mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Erro ao atualizar dados: $e')),
+                      );
+                    } finally {
+                      if (mounted) {
+                        setState(() => _isLoading = false);
+                      }
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: const Color(0xFF8B5CF6),
@@ -242,7 +377,94 @@ class AlteracaoDadosPage extends StatelessWidget {
 
               Center(
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final confirmar = await showDialog<bool>(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                        backgroundColor: const Color(0xFF1E293B),
+                        title: const Text(
+                          'Excluir Perfil',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        content: const Text(
+                          'Deseja realmente apagar sua conta? Essa ação é permanente e não pode ser desfeita.',
+                          style: TextStyle(color: Color(0xFF94A3B8)),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(ctx, false),
+                            child: const Text(
+                              'Cancelar',
+                              style: TextStyle(color: Color(0xFF94A3B8)),
+                            ),
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.redAccent,
+                            ),
+                            onPressed: () => Navigator.pop(ctx, true),
+                            child: const Text(
+                              'Excluir',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+
+                    if (confirmar != true) return;
+
+                    setState(() => _isLoading = true);
+
+                    try {
+                      final token = await UserSession.getToken();
+                      if (token == null) {
+                        throw Exception('Token não encontrado');
+                      }
+
+                      final sucesso = await UserApiService().deletarConta(
+                        token: token,
+                      );
+
+                      if (!mounted) return;
+
+                      if (sucesso) {
+                        await UserSession.clearSession();
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Conta excluída com sucesso!'),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/login',
+                          (route) => false,
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Falha ao excluir conta!'),
+                            backgroundColor: Colors.redAccent,
+                          ),
+                        );
+                      }
+                    } catch (e) {
+                      if (!mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Erro ao excluir conta: $e'),
+                          backgroundColor: Colors.redAccent,
+                        ),
+                      );
+                    } finally {
+                      if (mounted) {
+                        setState(() => _isLoading = false);
+                      }
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: Colors.redAccent,

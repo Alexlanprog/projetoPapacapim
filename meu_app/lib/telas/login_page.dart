@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'cadastro_page.dart';
 import 'tela_fixa.dart';
+import '/apiService/userApiService.dart';
+import '/apiService/userSession.dart';
 
-
-
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _usuarioController = TextEditingController();
+  final TextEditingController _senhaController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -14,91 +22,134 @@ class LoginPage extends StatelessWidget {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-
-
-            TextFormField(
-              style: const TextStyle(color: Colors.white),
-              decoration:  InputDecoration(
-                labelText: 'Nome de usuário ou Email',
-                border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: const  BorderSide(color: Color(0xFF8B5CF6)),
-                    ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextFormField(
+                controller: _usuarioController,
+                style: const TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Nome de usuário ou Email',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: const BorderSide(color: Color(0xFF8B5CF6)),
+                  ),
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: const BorderSide(color: Color(0xFF8B5CF6), width: 1.5),
-                    )  
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            TextFormField(
-              style: const TextStyle(color: Colors.white),
-              decoration:  InputDecoration(
-                labelText: 'Senha',
-                border: OutlineInputBorder(
-                      borderRadius:  BorderRadius.circular(16),
-                      borderSide: const  BorderSide(color: Color(0xFF8B5CF6)),
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: const BorderSide(
+                      color: Color(0xFF8B5CF6),
+                      width: 1.5,
                     ),
-                focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      borderSide: const BorderSide(color: Color(0xFF8B5CF6), width: 1.5),
-                    )
+                  ),
+                ),
               ),
-              obscureText: true,
-            ),
-            
-            const SizedBox(height: 32),
 
-//botao entrar
-            ElevatedButton(
-             style: ElevatedButton.styleFrom(
-                minimumSize: const Size(150, 50)
-              ),
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const tela_fixa()),
-                );
-              },
-              child: const Text('Entrar'),
-            ),
+              const SizedBox(height: 16),
 
-            const SizedBox(height: 24),
-
-          Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Não tem uma conta?',
-                      style: TextStyle(color: Colors.white),
+              TextFormField(
+                controller: _senhaController,
+                style: const TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Senha',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: const BorderSide(color: Color(0xFF8B5CF6)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: const BorderSide(
+                      color: Color(0xFF8B5CF6),
+                      width: 1.5,
                     ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const CadastroPage()),
-                        );
-                      },
-                      child: const Text(
-                        'Cadastre-se',
-                        style: TextStyle(
-                          color: Color(0xFF8B5CF6),
-                          fontWeight: FontWeight.bold,
+                  ),
+                ),
+                obscureText: true,
+              ),
+
+              const SizedBox(height: 32),
+
+              //botao entrar
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(150, 50),
+                ),
+                onPressed: () async {
+                  final usuario = _usuarioController.text.trim();
+                  final senha = _senhaController.text;
+
+                  if (usuario.isEmpty || senha.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Preencha todos os campos!'),
+                      ),
+                    );
+                    return;
+                  }
+                  try {
+                    final token = await UserApiService().getUser(
+                      login: usuario,
+                      senha: senha,
+                    );
+
+                    if (token.isNotEmpty) {
+                      await UserSession.saveSession(
+                        token: token,
+                        userName: usuario,
+                      );
+                    } else {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text('Erro ao logar')));
+                    }
+
+                    if (!mounted) return;
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const tela_fixa(),
+                      ),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text('Erro: $e')));
+                  }
+                },
+                child: const Text('Entrar'),
+              ),
+
+              const SizedBox(height: 24),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Não tem uma conta?',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const CadastroPage(),
                         ),
+                      );
+                    },
+                    child: const Text(
+                      'Cadastre-se',
+                      style: TextStyle(
+                        color: Color(0xFF8B5CF6),
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ],
-                )
-          
-          ],
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
-    )
     );
   }
 }

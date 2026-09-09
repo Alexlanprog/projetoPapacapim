@@ -11,37 +11,42 @@ class tela_fixa extends StatefulWidget {
 }
 
 class _tela_fixaState extends State<tela_fixa> {
-  // Índice para controlar qual aba inferior está ativa
   int _currentIndex = 0;
 
-  final List<Widget> _pages = const [
-    FeedPage(),      
-    BuscaPage(),    
-    PerfilPage(),   
-  ];
+  final GlobalKey<FeedPageState> _feedKey = GlobalKey<FeedPageState>();
+  final GlobalKey<PerfilPageState> _perfilKey = GlobalKey<PerfilPageState>();
+
+  late final List<Widget> _pages;
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+      FeedPage(key: _feedKey),
+      const BuscaPage(),
+      PerfilPage(key: _perfilKey),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _pages,
-      ),
-
-      
-      
+      body: IndexedStack(index: _currentIndex, children: _pages),
       bottomNavigationBar: NavigationBar(
         indicatorColor: Colors.transparent,
         backgroundColor: const Color(0xFF1E293B),
-
         selectedIndex: _currentIndex,
         onDestinationSelected: (int index) {
+          if (index == 2) {
+            _perfilKey.currentState?.carregarPerfil();
+          } else if (index == 0) {
+            _feedKey.currentState?.carregarFeed();
+          }
           setState(() {
-            _currentIndex = index; 
+            _currentIndex = index;
           });
         },
-        destinations:  [
+        destinations: [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
             selectedIcon: Icon(Icons.home, color: Color(0xFF8B5CF6)),
@@ -55,7 +60,7 @@ class _tela_fixaState extends State<tela_fixa> {
           NavigationDestination(
             icon: Icon(Icons.person_outline),
             selectedIcon: Icon(Icons.person, color: Color(0xFF8B5CF6)),
-            label: 'Perfil', 
+            label: 'Perfil',
           ),
         ],
       ),
