@@ -8,7 +8,7 @@ import 'alteracaodados_page.dart';
 import '/widgets/post.dart';
 
 class PerfilPage extends StatefulWidget {
-  final String? userLogin; // Se nulo, carrega o próprio usuário logado
+  final String? userLogin; 
 
   const PerfilPage({super.key, this.userLogin});
 
@@ -50,20 +50,16 @@ class PerfilPageState extends State<PerfilPage> {
         (widget.userLogin == null || widget.userLogin == meuLogin);
 
     try {
-      // 1. Busca dados do perfil
       final dados = await _userApiService.pegarPerfil(
         targetLogin,
         token: token,
       );
 
-      // 2. Busca posts do usuário
       var posts = await _postApiService.getPostsDoUsuario(
         targetLogin,
         token: token,
       );
 
-      // Se a rota específica de posts do usuário vier vazia,
-      // busca no feed geral e filtra pelo login do usuário como garantia!
       if (posts.isEmpty) {
         try {
           final todos = await _postApiService.getPost(token: token);
@@ -153,7 +149,6 @@ class PerfilPageState extends State<PerfilPage> {
 
     final novoEstado = !_isSeguindo;
 
-    // Atualiza a tela imediatamente (feedback instantâneo)
     setState(() {
       _isSeguindo = novoEstado;
       if (novoEstado) {
@@ -176,7 +171,6 @@ class PerfilPageState extends State<PerfilPage> {
         }
       }
     } catch (e) {
-      // Se a API falhar, desfaz a alteração na tela
       if (mounted) {
         setState(() {
           _isSeguindo = !novoEstado;
@@ -232,7 +226,6 @@ class PerfilPageState extends State<PerfilPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // 1. Banner e Avatar
                     SizedBox(
                       height: 150,
                       child: Stack(
@@ -266,8 +259,6 @@ class PerfilPageState extends State<PerfilPage> {
                         ],
                       ),
                     ),
-
-                    // 2. Dados do usuário
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Column(
@@ -290,7 +281,6 @@ class PerfilPageState extends State<PerfilPage> {
                           ),
                           const SizedBox(height: 16),
 
-                          // Seguidores e Seguindo
                           Row(
                             children: [
                               Text(
@@ -335,7 +325,6 @@ class PerfilPageState extends State<PerfilPage> {
                     const SizedBox(height: 24),
                     const Divider(color: Color(0xFF1E293B), thickness: 4),
 
-                    // 3. Sessão de Publicações
                     const Padding(
                       padding: EdgeInsets.symmetric(
                         horizontal: 20,
@@ -388,7 +377,6 @@ class PerfilPageState extends State<PerfilPage> {
     if (_isMeuPerfil) {
       return OutlinedButton(
         onPressed: () async {
-          // Quando voltar da tela de alteração, recarrega os dados atualizados!
           await Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const AlteracaoDadosPage()),
@@ -424,7 +412,6 @@ class PerfilPageState extends State<PerfilPage> {
         ),
       );
     }
-    // 3. Se não estiver seguindo: botão "Seguir" (roxo)
     return ElevatedButton(
       onPressed: _Seguir,
       style: ElevatedButton.styleFrom(
